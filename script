@@ -1,1 +1,37 @@
-print("Hello world")
+-- Referințe la obiecte
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 200)  -- Dimensiuni pentru fereastra
+frame.Position = UDim2.new(0.5, -150, 0.5, -100)  -- Poziționare pe ecran
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Culoare neagră
+frame.BackgroundTransparency = 0.5  -- Transparentă
+
+-- Animația pentru frame
+local tweenService = game:GetService("TweenService")
+local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out)
+
+local tweenGoal = {Position = UDim2.new(0.5, -frame.Size.X.Offset / 2, 0.5, -frame.Size.Y.Offset / 2)}  -- Poziționare exact în mijloc
+
+local tween = tweenService:Create(frame, tweenInfo, tweenGoal)
+frame.Visible = true
+tween:Play()
+
+frame.Parent = screenGui
+
+-- Crearea butonului "X"
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 40, 0, 40)
+closeButton.Position = UDim2.new(1, -45, 0, 5)  -- Poziționat în dreapta sus
+closeButton.Text = "X"
+closeButton.TextSize = 20
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Culoare roșie
+closeButton.Parent = frame
+
+-- Funcția pentru a închide fereastra
+closeButton.MouseButton1Click:Connect(function()
+    frame:TweenPosition(UDim2.new(0.5, -frame.Size.X.Offset / 2, 1, 0), "Out", "Quad", 0.5, true)  -- Ascunde fereastra
+    wait(0.5)  -- Așteaptă să se termine animația
+    frame.Visible = false  -- Ascunde complet frame-ul
+end)
